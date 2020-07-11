@@ -1,0 +1,1 @@
+{"virtualbox":{"/vagrant_data":{"guestpath":"/vagrant_data","hostpath":"C:/Dev/Linkedin_tuts/HashiCorp_track/vagrant_hc/data","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/Dev/Linkedin_tuts/HashiCorp_track/vagrant_hc/vagrant-dev","disabled":false,"__vagrantfile":true}}}

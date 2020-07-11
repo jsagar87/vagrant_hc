@@ -1,0 +1,109 @@
+- Install vs code
+- install plugin for vagrant support
+- Create vagrant file using already covered command "vagrant init"
+- modify it to box - bento/ubuntu-16.04
+
+---------------------------------------
+2. Subsection :: Vagrant file sync
+---------------------------------------
+Vagrantfile
+===
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.synced_folder "../data", "/vagrant_data"
+end
+===
+
+Command:
+===
+vagrant reload
+===
+
+---------------------------------------
+3. Subsection :: Vagrant networking
+---------------------------------------
+
+For port forwarding install NGINX on box
+
+Commands:
+===
+vagrant ssh
+sudo apt-get update
+sudo apt-get install -y nginx
+curl localhost
+===
+
+Vagrantfile
+===
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "private_network", type:"dhcp"
+  config.vm.synced_folder "../data", "/vagrant_data"
+end
+===
+
+---------------------------------------
+4. Subsection :: Vagrant providers
+---------------------------------------
+Vagrant providers allow Vagrant to define a box for a particular hypervisor. Vagrant includes built-in providers for two of the most common hypervisors, virtualbox and Hyper-V.
+
+Commands:
+===
+vagrant ssh
+# How much of memory allocated and how much is used and many more
+vmstat -s
+# How many virtual CPUs are allocated
+lscpu
+lspci -v -s 00:02.0
+===
+
+Above commands revealed that box is allocated 1 Gb of RAM and 1 Virtual CPU
+Let's suppose that we need less memory but more CPU on our box
+Add/attach GUI and increase video ram memory to 16 from default 8.
+
+Vagrantfile
+===
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "private_network", type:"dhcp"
+  config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+    vb.memory = "512"
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--vram", "16"]
+  end
+end
+===
+
+---------------------------------------
+5. Subsection :: Vagrant provisioners
+---------------------------------------
+Vagrant provisioners are scripts that can be defined in a Vagrantfile or externally in a separate file. Bydefault provisioners are executed the first time a box runs. They're used to setup a box for a particular purpose. Provisioners can install software, download application code and set configurations needed for a particular developer environment.
+
+By default, provisioners run the first time a box is started. The Vagrantfile can be configured to run them with each boot, and the --provisioners parameter may be used with 'vagrant up' to force provisioners to run.
+
+Commands:
+===
+vagrant halt
+vagrant destroy
+vagrant up
+===
+
+Vagrantfile
+===
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "private_network", type:"dhcp"
+  config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+    vb.memory = "512"
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--vram", "16"]
+  end
+  config.vm.provision "shell", path: "provisioners/nginx-install.sh"
+end

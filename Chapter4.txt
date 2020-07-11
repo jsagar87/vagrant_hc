@@ -1,0 +1,13 @@
+git clone git@github.com:dswersky/node_todolist.git
+
+vagrant init bento/ubuntu-16.04
+
+# Node port 3000
+config.vm.network "forwarded_port", guest: 3000, host: 8080
+
+config.vm.provider "virtualbox" do |vb|
+  vb.memory = "512"
+end
+
+config.vm.provision "shell", path: "provisioners/install-mongo.sh"
+config.vm.provision "shell", path: "provisioners/install-node.sh"

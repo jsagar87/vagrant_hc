@@ -1,0 +1,6 @@
+Description: Course exercise files from "Learning Vagrant"
+Platform: LinkedIN Learning
+By: David Swersky
+Released: Apr 26,2018
+Started on: July 7,2020
+Completed On: July 7,2020
