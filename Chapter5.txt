@@ -1,0 +1,25 @@
+vagrant package --vagrantfile vagrant_file/Vagrantfile --output node_dev_env.box
+
+vagrant box list
+
+vagrant box add node_dev_env node_dev_env.box
+
+vagrant package --vagrantfile vagrant_file/Vagrantfile --output myfirstbox.box
+
+===
+vagrant up
+vagrant snapshot save pre_provision
+vagrant halt
+# changes in the vagrant file for provisioners
+vagrant up --provision
+vagrant snapshot save after_provision
+vagrant snapshot list
+vagrant snapshot restore pre_provision --no-provision
+vagrant snapshot 
+===
+
+===
+vagrant suspend
+vagrant status
+vagrant resume
+===
